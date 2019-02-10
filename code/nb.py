@@ -2,6 +2,7 @@
 
 from numpy import *
 
+
 class NaiveBayesClassificationModel(object):
     """
     NBC Model.
@@ -41,5 +42,6 @@ def validate(data_file_name, k):
     model = NaiveBayesClassificationModel()
     # model.train()
 
+
 if __name__ == '__main__':
-    validate('./data/SMSSpamCollection.txt', 4)
+    validate('../data/SMSSpamCollection.txt', 4)
