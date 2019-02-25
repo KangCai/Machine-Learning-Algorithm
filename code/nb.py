@@ -3,7 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import re
-
+import time
 
 class NaiveBayesClassificationModel(object):
     """
@@ -190,9 +190,14 @@ if __name__ == '__main__':
     raw_data_list = data_pre_process(file_name)
     fold_count = 4
     fold_data_list = shuffle(raw_data_list, fold_count)
+    acc_average = 0
+    cut_off = 5000
+    t1 = time.clock()
     for fold, data_list in enumerate(fold_data_list):
-        word_count_list, key_word_set = statistic_key_word(data_list, cut_off=5000)
+        word_count_list, key_word_set = statistic_key_word(data_list, cut_off=cut_off)
         nbc_model = NaiveBayesClassificationModel(key_word_set)
         nbc_model.train(data_list)
         accuracy, metric = nbc_model.validate(data_list)
+        acc_average += accuracy
         print('Fold %r/%r - Acc:%r Metric:%r' % (fold+1, fold_count, accuracy, metric))
+    print('Average Acc:%r Average Cost Time:%r' % (acc_average / len(fold_data_list), (time.clock() - t1) / len(fold_data_list)))
