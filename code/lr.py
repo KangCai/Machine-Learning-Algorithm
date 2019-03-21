@@ -141,6 +141,8 @@ if __name__ == '__main__':
         word_count_list, key_word_set = statistic_key_word(data_list, cut_off=cut_off)
         data = feature_batch_extraction(data_list, key_word_set)
 =======
+=======
+>>>>>>> origin/master
 class LogisticRegressionModel(object):
     """
     罗吉斯蒂克回归
@@ -155,4 +157,7 @@ class LogisticRegressionModel(object):
         :return: None
         """
 
+<<<<<<< HEAD
+>>>>>>> origin/master
+=======
 >>>>>>> origin/master
