@@ -140,24 +140,3 @@ if __name__ == '__main__':
     for fold, data_list in enumerate(fold_data_list):
         word_count_list, key_word_set = statistic_key_word(data_list, cut_off=cut_off)
         data = feature_batch_extraction(data_list, key_word_set)
-=======
-=======
->>>>>>> origin/master
-class LogisticRegressionModel(object):
-    """
-    罗吉斯蒂克回归
-    """
-    def __init__(self):
-        pass
-
-    def train(self, data):
-        """
-        训练模型
-        :param data: 以 [[label] [input_text_words]] 的形式构成的list
-        :return: None
-        """
-
-<<<<<<< HEAD
->>>>>>> origin/master
-=======
->>>>>>> origin/master
