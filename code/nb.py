@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import re
 import time
 
+
 class NaiveBayesClassificationModel(object):
     """
     朴素贝叶斯模型
