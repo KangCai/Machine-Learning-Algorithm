@@ -2,28 +2,8 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 import time
-
-
-class OneHotFeatureExtraction(object):
-    """
-    One-hot编码特征提取
-    """
-    def __init__(self, kw_set):
-        # 关键字集合，即哪些单词是我们要当做是特征属性的单词
-        self.kw_set = dict(zip(list(kw_set), range(len(kw_set))))
-
-    def extract(self, input_text_words):
-        """
-        独热编码特征提取
-        :param input_text_words:
-        :return:
-        """
-        for word in input_text_words:
-            if word not in self.kw_set:
-                continue
-
-
 
 class RegressionModel(object):
     """
@@ -40,6 +20,25 @@ class RegressionModel(object):
         return
 
 
+class OneHotFeatureExtraction(object):
+    """
+    One-hot编码特征提取
+    """
+    def __init__(self, kw_set):
+        # 关键字集合，即哪些单词是我们要当做是特征属性的单词
+        self.
+
+    def extract(self, input_text_words):
+        """
+        独热编码特征提取
+        :param input_text_words:
+        :return:
+        """
+        for word in input_text_words:
+            if word not in self.kw_set:
+                continue
+
+
 def feature_batch_extraction(d_list, kw_set):
     """
 
@@ -47,7 +46,7 @@ def feature_batch_extraction(d_list, kw_set):
     :param kw_set:
     :return:
     """
-    feature_extraction = OneHotFeatureExtraction(kw_set)
+    kw_2_idx_dict = dict(zip(list(kw_set), range(len(kw_set))))
     feature_data_list = []
     for label, words in d_list:
         feature = feature_extraction.extract(words)
