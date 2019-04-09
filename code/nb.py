@@ -151,7 +151,7 @@ def shuffle(data, k):
             label_data_dict[label] = list()
         label_data_dict[label].append((label, word_in_doc_set))
     # 切分并打乱
-    k_fold_data_list = [list() for _ in range(k)]
+    k_group_data_list = [list() for _ in range(k)]
     for label, label_data_list in label_data_dict.items():
         # 打乱
         seq = np.random.permutation(range(len(label_data_list)))
@@ -159,7 +159,14 @@ def shuffle(data, k):
         fold_instance_count = int(len(label_data_list) / k)
         for i in range(k):
             for idx in range(i * fold_instance_count, (i+1) * fold_instance_count):
-                k_fold_data_list[i].append(label_data_list[seq[idx]])
+                k_group_data_list[i].append(label_data_list[seq[idx]])
+    k_fold_data_list = list()
+    for i in range(k):
+        train_data = []
+        for j in range(k):
+            if i != j:
+                train_data.extend(k_group_data_list[j])
+        k_fold_data_list.append((train_data, k_group_data_list[i]))
     return k_fold_data_list
 
 
@@ -195,10 +202,11 @@ if __name__ == '__main__':
     cut_off = 5000
     t1 = time.clock()
     for fold, data_list in enumerate(fold_data_list):
-        word_count_list, key_word_set = statistic_key_word(data_list, cut_off=cut_off)
+        train_data_list, test_data_list = data_list
+        word_count_list, key_word_set = statistic_key_word(train_data_list, cut_off=cut_off)
         nbc_model = NaiveBayesClassificationModel(key_word_set)
-        nbc_model.train(data_list)
-        accuracy, metric = nbc_model.validate(data_list)
+        nbc_model.train(train_data_list)
+        accuracy, metric = nbc_model.validate(test_data_list)
         acc_average += accuracy
         print('Fold %r/%r - Acc:%r Metric:%r' % (fold+1, fold_count, accuracy, metric))
     print('Average Acc:%r Average Cost Time:%r' % (acc_average / len(fold_data_list), (time.clock() - t1) / len(fold_data_list)))

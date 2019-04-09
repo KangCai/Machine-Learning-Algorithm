@@ -20,38 +20,22 @@ class RegressionModel(object):
         return
 
 
-class OneHotFeatureExtraction(object):
-    """
-    One-hot编码特征提取
-    """
-    def __init__(self, kw_set):
-        # 关键字集合，即哪些单词是我们要当做是特征属性的单词
-        self.
-
-    def extract(self, input_text_words):
-        """
-        独热编码特征提取
-        :param input_text_words:
-        :return:
-        """
-        for word in input_text_words:
-            if word not in self.kw_set:
-                continue
-
-
 def feature_batch_extraction(d_list, kw_set):
     """
-
+    特征批量提取
     :param d_list:
     :param kw_set:
     :return:
     """
     kw_2_idx_dict = dict(zip(list(kw_set), range(len(kw_set))))
-    feature_data_list = []
+    feature_data = []
     for label, words in d_list:
-        feature = feature_extraction.extract(words)
-        feature_data_list.append((label, feature))
-    return feature_data_list
+        feature = np.zeros(len(kw_set))
+        for word in words:
+            if word in kw_2_idx_dict:
+                feature[kw_2_idx_dict[word]] = 1
+        feature_data.append((label, feature))
+    return feature_data
 
 
 def data_pre_process(data_file_name):
@@ -117,7 +101,7 @@ def shuffle(data, k):
             label_data_dict[label] = list()
         label_data_dict[label].append((label, word_in_doc_set))
     # 切分并打乱
-    k_fold_data_list = [list() for _ in range(k)]
+    k_group_data_list = [list() for _ in range(k)]
     for label, label_data_list in label_data_dict.items():
         # 打乱
         seq = np.random.permutation(range(len(label_data_list)))
@@ -125,7 +109,14 @@ def shuffle(data, k):
         fold_instance_count = int(len(label_data_list) / k)
         for i in range(k):
             for idx in range(i * fold_instance_count, (i+1) * fold_instance_count):
-                k_fold_data_list[i].append(label_data_list[seq[idx]])
+                k_group_data_list[i].append(label_data_list[seq[idx]])
+    k_fold_data_list = list()
+    for i in range(k):
+        train_data = []
+        for j in range(k):
+            if i != j:
+                train_data.extend(k_group_data_list[j])
+        k_fold_data_list.append((train_data, k_group_data_list[i]))
     return k_fold_data_list
 
 if __name__ == '__main__':
@@ -137,5 +128,14 @@ if __name__ == '__main__':
     cut_off = 5000
     t1 = time.clock()
     for fold, data_list in enumerate(fold_data_list):
-        word_count_list, key_word_set = statistic_key_word(data_list, cut_off=cut_off)
-        data = feature_batch_extraction(data_list, key_word_set)
+        train_data_list, test_data_list = data_list
+        word_count_list, key_word_set = statistic_key_word(train_data_list, cut_off=cut_off)
+        # Feature extraction
+        train_feature = feature_batch_extraction(train_data_list, key_word_set)
+        test_feature = feature_batch_extraction(test_data_list, key_word_set)
+        # Train model
+        lr_model = RegressionModel()
+        lr_model.train(train_feature)
+        # Validate
+
+
