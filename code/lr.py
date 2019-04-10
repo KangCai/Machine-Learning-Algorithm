@@ -10,15 +10,53 @@ class RegressionModel(object):
     逻辑回归模型
     """
     def __init__(self):
-        return
+        self.W = None
 
-    def train(self, data):
-        for label, feature in data:
-            pass
+    def train(self, x_train, y_train, learning_rate=0.1, num_iters=10000):
+        """
+        模型训练
+        :param x_train: shape = num_train, dim_feature
+        :param y_train: shape = num_train, 1
+        :param learning_rate
+        :param num_iters
+        :return:
+        """
+        num_train, dim_feature = x_train.shape
+        # w * x + b
+        x_train_ = np.hstack((x_train, np.ones((num_train, 1))))
+        self.W = 0.001 * np.random.randn(dim_feature + 1, 1)
+        loss_history = []
+        for i in range(num_iters):
+            # linear transformation: w * x + b
+            g = np.dot(x_train_, self.W)
+            # sigmoid: 1 / (1 + e**-x)
+            h = 1 / (1 + np.exp(-g))
+            # cross entropy: 1/m * sum((y*np.log(h) + (1-y)*np.log((1-h))))
+            loss = -np.sum(y_train * np.log(h) + (1 - y_train) * np.log(1 - h)) / num_train
+            loss_history.append(loss)
+            # dW = cross entropy' = 1/m * sum(h-y) * x
+            dW = x_train_.T.dot(h - y_train) / num_train
+            # W = W - dW
+            self.W -= learning_rate * dW
+            # debug
+            if i % 100 == 0:
+                print('Iters: %r/%r Loss: %r' % (i, num_iters, loss))
+        return loss_history
 
     def test(self, input_feature):
+        """
+        预测过程
+        :param input_feature: 处理过后的单词集合特征
+        :return:
+        """
         return
 
+    def validate(self, validate_batch_feature):
+        """
+        验证模型效果
+        :param validate_batch_feature: 以 [[label] [feature]] 的形式形构成的list
+        :return:
+        """
 
 def feature_batch_extraction(d_list, kw_set):
     """
@@ -28,14 +66,15 @@ def feature_batch_extraction(d_list, kw_set):
     :return:
     """
     kw_2_idx_dict = dict(zip(list(kw_set), range(len(kw_set))))
-    feature_data = []
-    for label, words in d_list:
-        feature = np.zeros(len(kw_set))
+    feature_data = np.zeros((len(d_list), len(kw_set)))
+    label_data = np.zeros((len(d_list), 1))
+    for i in range(len(d_list)):
+        label, words = d_list[i]
         for word in words:
             if word in kw_2_idx_dict:
-                feature[kw_2_idx_dict[word]] = 1
-        feature_data.append((label, feature))
-    return feature_data
+                feature_data[i, kw_2_idx_dict[word]] = 1
+        label_data[i] = 1 if label == 'spam' else 0
+    return feature_data, label_data
 
 
 def data_pre_process(data_file_name):
@@ -119,23 +158,75 @@ def shuffle(data, k):
         k_fold_data_list.append((train_data, k_group_data_list[i]))
     return k_fold_data_list
 
-if __name__ == '__main__':
+def draw_loss_list(loss_list):
+    """
+    画出单词频次分布情况，为选择一个合适的截断提供直观的依据
+    :param loss_list:
+    :return:
+    """
+    plt.figure(figsize=(8, 4))
+    plt.xlabel('Rank of key word')
+    plt.ylabel('count of doc containing key word')
+    xt_list = range(0, len(loss_list[0]), 1000)
+    for cut_off, loss in loss_list:
+        plt.plot(range(1, len(loss) + 1), loss, label='cut off %r' % (cut_off,))
+    plt.xticks(xt_list, xt_list)
+    plt.xlim(1, len(loss_list[0]) + 1)
+    plt.ylim(0, 0.7)
+    plt.legend()
+    plt.show()
+
+def performance_with_cut_off():
+    """
+
+    :return:
+    """
+    file_name = '../data/SMSSpamCollection.txt'
+    raw_data_list = data_pre_process(file_name)
+    fold_count = 4
+    fold_data_list = shuffle(raw_data_list, fold_count)
+    loss_list = list()
+    for cut_off in (200, 500, 2000, 5000, 7955):
+        data_list = fold_data_list[0]
+        train_data_list, test_data_list = data_list
+        word_count_list, key_word_set = statistic_key_word(train_data_list, cut_off=cut_off)
+        # Feature extraction
+        train_feature, train_label = feature_batch_extraction(train_data_list, key_word_set)
+        validate_feature, validate_label = feature_batch_extraction(test_data_list, key_word_set)
+        # Train model
+        lr_model = RegressionModel()
+        loss_history = lr_model.train(train_feature, train_label, num_iters=10000)
+        loss_list.append((cut_off, loss_history))
+    draw_loss_list(loss_list)
+
+def performance_with_fold():
+    """
+
+    :return:
+    """
     file_name = '../data/SMSSpamCollection.txt'
     raw_data_list = data_pre_process(file_name)
     fold_count = 4
     fold_data_list = shuffle(raw_data_list, fold_count)
     acc_average = 0
-    cut_off = 5000
+    cut_off = 500
     t1 = time.clock()
     for fold, data_list in enumerate(fold_data_list):
         train_data_list, test_data_list = data_list
         word_count_list, key_word_set = statistic_key_word(train_data_list, cut_off=cut_off)
         # Feature extraction
-        train_feature = feature_batch_extraction(train_data_list, key_word_set)
-        test_feature = feature_batch_extraction(test_data_list, key_word_set)
+        train_feature, train_label = feature_batch_extraction(train_data_list, key_word_set)
+        validate_feature, validate_label = feature_batch_extraction(test_data_list, key_word_set)
         # Train model
         lr_model = RegressionModel()
-        lr_model.train(train_feature)
+        loss_history = lr_model.train(train_feature, train_label)
         # Validate
+        accuracy, metric = lr_model.validate(validate_feature, validate_label)
+        acc_average += accuracy
+        print('Fold %r/%r - Acc:%r Metric:%r' % (fold + 1, fold_count, accuracy, metric))
+    print('Average Acc:%r Average Cost Time:%r' % (acc_average / len(fold_data_list),
+            (time.clock() - t1) / len(fold_data_list)))
 
+if __name__ == '__main__':
+    performance_with_cut_off()
 

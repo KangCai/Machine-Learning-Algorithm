@@ -209,4 +209,5 @@ if __name__ == '__main__':
         accuracy, metric = nbc_model.validate(test_data_list)
         acc_average += accuracy
         print('Fold %r/%r - Acc:%r Metric:%r' % (fold+1, fold_count, accuracy, metric))
-    print('Average Acc:%r Average Cost Time:%r' % (acc_average / len(fold_data_list), (time.clock() - t1) / len(fold_data_list)))
+    print('Average Acc:%r Average Cost Time:%r' % (acc_average / len(fold_data_list),
+            (time.clock() - t1) / len(fold_data_list)))

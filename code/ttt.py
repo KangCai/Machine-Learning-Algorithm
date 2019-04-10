@@ -1,5 +1,9 @@
 import numpy as np
 
-a = [0, 2, 1]
-np_a = np.array(a)
-print(np_a*2)
+a = [
+    [1, 2],
+    [3, 4],
+]
+
+b = np.hstack((a, np.ones((2, 1))))
+print(b)
