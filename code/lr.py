@@ -26,7 +26,7 @@ class RegressionModel(object):
         x_train_ = np.hstack((x_train, np.ones((num_train, 1))))
         self.W = 0.001 * np.random.randn(dim_feature + 1, 1)
         loss_history = []
-        for i in range(num_iters):
+        for i in range(num_iters+1):
             # linear transformation: w * x + b
             g = np.dot(x_train_, self.W)
             # sigmoid: 1 / (1 + e**-x)
@@ -51,12 +51,33 @@ class RegressionModel(object):
         """
         return
 
-    def validate(self, validate_batch_feature):
+    def validate(self, x_val, y_val):
         """
         验证模型效果
-        :param validate_batch_feature: 以 [[label] [feature]] 的形式形构成的list
-        :return:
+        :param x_val: shape = num_val, dim_feature
+        :param y_val: shape = num_val, 1
+        :return: accuracy, metric
         """
+        num_val, dim_feature = x_val.shape
+        x_val_ = np.hstack((x_val, np.ones((num_val, 1))))
+        # linear transformation: w * x + b
+        g = np.dot(x_val_, self.W)
+        # sigmoid: 1 / (1 + e**-x)
+        h = 1 / (1 + np.exp(-g))
+        # predict
+        y_val_ = h
+        y_val_[y_val_ >= 0.5] = 1
+        y_val_[y_val_ < 0.5] = 0
+        true_positive = len(np.where(((y_val_ == 1).astype(int) + (y_val == 1).astype(int) == 2) == True)[0]) * 1.0 / num_val
+        true_negative = len(np.where(((y_val_ == 0).astype(int) + (y_val == 0).astype(int) == 2) == True)[0]) * 1.0 / num_val
+        false_positive = len(np.where(((y_val_ == 1).astype(int) + (y_val == 0).astype(int) == 2) == True)[0]) * 1.0 / num_val
+        false_negative = len(np.where(((y_val_ == 0).astype(int) + (y_val == 1).astype(int) == 2) == True)[0]) * 1.0 / num_val
+        negative_instance = true_negative + false_positive
+        positive_instance = false_negative + true_positive
+        metric = np.array([[true_negative / negative_instance, false_positive / negative_instance],
+                           [false_negative / positive_instance, true_positive / positive_instance]])
+        accuracy = true_positive + true_negative
+        return accuracy, metric
 
 def feature_batch_extraction(d_list, kw_set):
     """
@@ -165,13 +186,15 @@ def draw_loss_list(loss_list):
     :return:
     """
     plt.figure(figsize=(8, 4))
-    plt.xlabel('Rank of key word')
-    plt.ylabel('count of doc containing key word')
-    xt_list = range(0, len(loss_list[0]), 1000)
+    plt.xlabel('Train iteration')
+    plt.ylabel('Loss')
+    xt_list = range(0, len(loss_list[0][1]), 1000)
+    print(len(loss_list[0][1]))
     for cut_off, loss in loss_list:
-        plt.plot(range(1, len(loss) + 1), loss, label='cut off %r' % (cut_off,))
+        print(len(loss))
+        plt.plot(range(0, len(loss)), loss, label='cut off %r' % (cut_off,))
     plt.xticks(xt_list, xt_list)
-    plt.xlim(1, len(loss_list[0]) + 1)
+    plt.xlim(1, len(loss_list[0][1]) + 1)
     plt.ylim(0, 0.7)
     plt.legend()
     plt.show()
@@ -186,7 +209,9 @@ def performance_with_cut_off():
     fold_count = 4
     fold_data_list = shuffle(raw_data_list, fold_count)
     loss_list = list()
-    for cut_off in (200, 500, 2000, 5000, 7955):
+    accuracy_list = list()
+    metric_list = list()
+    for cut_off in (200, 500, 2000, 5000, 7956):
         data_list = fold_data_list[0]
         train_data_list, test_data_list = data_list
         word_count_list, key_word_set = statistic_key_word(train_data_list, cut_off=cut_off)
@@ -197,7 +222,20 @@ def performance_with_cut_off():
         lr_model = RegressionModel()
         loss_history = lr_model.train(train_feature, train_label, num_iters=10000)
         loss_list.append((cut_off, loss_history))
-    draw_loss_list(loss_list)
+        accuracy, metric = lr_model.validate(validate_feature, validate_label)
+        accuracy_list.append(accuracy)
+        metric_list.append(metric)
+    with open('../result/lr_loss_list.txt', 'w') as f:
+        f.write(str(loss_list) + '\n')
+        f.write(str(accuracy_list) + '\n')
+        f.write(str(metric_list))
+    with open('../result/lr_loss_list.txt') as f:
+        loss_list = eval(f.readline())
+        draw_loss_list(loss_list)
+        accuracy_list = eval(f.readline())
+        metric_list = eval(f.readline())
+        print(accuracy_list)
+        print(metric_list)
 
 def performance_with_fold():
     """
