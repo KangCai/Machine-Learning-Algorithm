@@ -19,7 +19,7 @@ class RegressionModel(object):
         :param y_train: shape = num_train, 1
         :param learning_rate
         :param num_iters
-        :return:
+        :return: loss_history
         """
         num_train, dim_feature = x_train.shape
         # w * x + b
@@ -42,14 +42,6 @@ class RegressionModel(object):
             if i % 100 == 0:
                 print('Iters: %r/%r Loss: %r' % (i, num_iters, loss))
         return loss_history
-
-    def test(self, input_feature):
-        """
-        预测过程
-        :param input_feature: 处理过后的单词集合特征
-        :return:
-        """
-        return
 
     def validate(self, x_val, y_val):
         """
@@ -82,8 +74,8 @@ class RegressionModel(object):
 def feature_batch_extraction(d_list, kw_set):
     """
     特征批量提取
-    :param d_list:
-    :param kw_set:
+    :param d_list: 原始数据集
+    :param kw_set: 关键字列表
     :return:
     """
     kw_2_idx_dict = dict(zip(list(kw_set), range(len(kw_set))))
@@ -211,7 +203,9 @@ def performance_with_cut_off():
     loss_list = list()
     accuracy_list = list()
     metric_list = list()
+    time_cost_list = list()
     for cut_off in (200, 500, 2000, 5000, 7956):
+        t1 = time.clock()
         data_list = fold_data_list[0]
         train_data_list, test_data_list = data_list
         word_count_list, key_word_set = statistic_key_word(train_data_list, cut_off=cut_off)
@@ -225,16 +219,20 @@ def performance_with_cut_off():
         accuracy, metric = lr_model.validate(validate_feature, validate_label)
         accuracy_list.append(accuracy)
         metric_list.append(metric)
+        time_cost_list.append((time.clock() - t1))
     with open('../result/lr_loss_list.txt', 'w') as f:
         f.write(str(loss_list) + '\n')
         f.write(str(accuracy_list) + '\n')
+        f.write(str(time_cost_list) + '\n')
         f.write(str(metric_list))
     with open('../result/lr_loss_list.txt') as f:
         loss_list = eval(f.readline())
         draw_loss_list(loss_list)
         accuracy_list = eval(f.readline())
-        metric_list = eval(f.readline())
         print(accuracy_list)
+        time_cost_list = eval(f.readline())
+        print(time_cost_list)
+        metric_list = eval(f.readline())
         print(metric_list)
 
 def performance_with_fold():

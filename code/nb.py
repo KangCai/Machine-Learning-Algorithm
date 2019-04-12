@@ -199,7 +199,7 @@ if __name__ == '__main__':
     fold_count = 4
     fold_data_list = shuffle(raw_data_list, fold_count)
     acc_average = 0
-    cut_off = 5000
+    cut_off = 500
     t1 = time.clock()
     for fold, data_list in enumerate(fold_data_list):
         train_data_list, test_data_list = data_list
