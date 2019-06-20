@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import numpy as np
+import random
 
 class KmeansModel(object):
 
@@ -12,20 +13,22 @@ class KmeansModel(object):
         :return:
         """
         row, col = x.shape
-        # Calculate the value range of dimension.
-        max_val, min_val = np.max(x, 0), np.min(x, 0)
         # Init centers according to value range.
-        centers = np.random.rand(k, col) * (max_val - min_val) + min_val
+        rand_idx = random.sample(range(0, row), k)
+        centers = x[rand_idx, :]
         # Iteration of assigning cluster ID to each point
         assignments = self._assign_points(x, centers)
         old_assignments = None
+        count = 0
         while (assignments != old_assignments).any():
+            count += 1
             # New centers
             centers = self._update_centers(x, k, assignments)
             # Store old assignments
             old_assignments = assignments
             # New assignments
             assignments = self._assign_points(x, centers)
+            print(count, assignments, old_assignments)
         return zip(assignments, x)
 
     def _update_centers(self, x, k, assignments):
@@ -51,5 +54,5 @@ class KmeansModel(object):
 
 if __name__ == '__main__':
     model_kmeans = KmeansModel()
-    for label, point in model_kmeans.cluster(np.array([[0, 1], [2, 2], [4, 5]]), 2):
+    for label, point in model_kmeans.cluster(np.array([[0, 1], [1, 1], [2, 2], [4, 5]]), 2):
         print(label, point)
