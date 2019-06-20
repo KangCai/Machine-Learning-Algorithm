@@ -1,10 +1,6 @@
 import numpy as np
 
-a = np.array([1, 0, 0])
-b = np.array([1, 0, 1])
-print(a == 1)
-print(b == 1)
-k = (a == 1).astype(int) + (b == 1).astype(int) == 2
-print(k)
-print(np.where(k==True))
-print(len(np.where(k==True)[0]))
+a = np.array([[2, 1, 2],[2, 1, 1]])
+print(a + 5)
+print(a / a.sum(axis=0))
+print(a / a.sum(axis=0).reshape(1, 3))

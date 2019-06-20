@@ -21,5 +21,6 @@ class SVMModel(object):
         :return: loss_history
         """
         num_train, dim_feature = x_train.shape
-
+        # w * x + b
+        for i in range()
 
