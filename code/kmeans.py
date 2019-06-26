@@ -130,19 +130,26 @@ class PointContainer(object):
 if __name__ == '__main__':
     import random, time
     a_ = []
-    # 10,000: Naive kmeans 3.3s; KD tree kmeans 0.4s
-    # 100,000: Naive kmeans 76.3s; KD tree kmeans 4.5s
+    # k = 3
+    # 100: Naive kmeans 0.004s; KD tree kmeans 0.004s
+    # 1,000: Naive kmeans 0.19s; KD tree kmeans 0.05s
+    # 10,000: Naive kmeans 4.9s; KD tree kmeans 0.4s
+    # 100,000: Naive kmeans 66.6s; KD tree kmeans 4.2s
     for _ in range(10000):
         a_.append((random.uniform(0, 100), random.uniform(0, 100)))
     a_ = np.array(a_)
     k_ = 3
     print('=' * 5 + ' Naive kmeans ' + '=' * 5)
+    model = KmeansModel()
     t1 = time.clock()
-    res = KmeansModel().cluster(a_, k_)
+    model.cluster(a_, k_)
     print('Total used time: %r s' % (time.clock() - t1))
-    # print res
+    # for label, point in res:
+    #     print(label, point)
     print('=' * 5 + ' KD tree kmeans ' + '=' * 5)
+    model = KmeansModelKDTree()
     t1 = time.clock()
-    res = KmeansModelKDTree().cluster(a_, k_)
+    res = model.cluster(a_, k_)
     print('Total used time: %r s' % (time.clock() - t1))
-    # print res
+    # for label, point in res:
+    #     print(label, point)
