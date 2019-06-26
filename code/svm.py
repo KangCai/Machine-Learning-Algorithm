@@ -7,7 +7,7 @@ import time
 
 class SVMModel(object):
     """
-    SVM模型
+    SVM model
     """
     def __init__(self, kernel):
         self.kernel = kernel
@@ -15,12 +15,12 @@ class SVMModel(object):
 
     def train(self, x_train, y_train):
         """
-        模型训练
+        Training model
         :param x_train: shape = num_train, dim_feature
         :param y_train: shape = num_train, 1
         :return: loss_history
         """
         num_train, dim_feature = x_train.shape
         # w * x + b
-        for i in range()
+        # for i in range()
 
