@@ -121,12 +121,12 @@ def _TestVisualization():
     color = ['c', 'g', 'b', 'r']
     for i in range(m):
         for _ in range(n_train):
-            x, y, l = random.uniform(int(i / 2), int(i / 2) + 1), random.uniform(i % 2, i % 2 + 1), i
+            x, y, l = random.uniform(int(i/2)+0.1, int(i/2)+0.9), random.uniform(i%2+0.1, i%2+0.9), i
             X_train.append((x, y))
             Y_train.append(i)
             plt.scatter(x, y, s=100, c=color[i])
         for _ in range(n_val):
-            x, y, l = random.uniform(int(i / 2), int(i / 2) + 1), random.uniform(i % 2, i % 2 + 1), i
+            x, y, l = random.uniform(int(i/2)+0.1, int(i/2)+0.9), random.uniform(i%2+0.1, i%2+0.9), i
             X_val.append((x, y))
             Y_val.append(i)
     X_train, X_val, Y_train, Y_val = np.array(X_train), np.array(X_val), np.array(Y_train), np.array(Y_val)
@@ -135,6 +135,9 @@ def _TestVisualization():
         accuracy, label_val = model.validate(X_val, Y_val)
         for i in range(len(label_val)):
             plt.scatter(X_val[i, 0], X_val[i, 1], alpha=0.3, s=100, c=color[Y_val[i]], linewidths=2, edgecolors=color[label_val[i]])
+    plt.grid()
+    plt.xlim(0, 2)
+    plt.ylim(0, 2)
     plt.show()
 
 if __name__ == '__main__':
