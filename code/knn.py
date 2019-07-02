@@ -95,16 +95,16 @@ def _TestEfficiency():
     import random
     X_train, Y_train = [], []
     # k=5, n=100000, m=200: 2.4(Naive), 6.0(Heap), 0.05(KDTree)
-    k_, n_, t_num = 5, 100000, 200
+    k_, n_, t_num, d = 5, 1000, 200, 500
     # Train
     for _ in range(n_):
-        X_train.append((random.uniform(0, 50), random.uniform(0, 50)))
+        X_train.append([random.uniform(0, 50) for _ in range(d)])
         Y_train.append(random.randint(0, 1))
     X_train, Y_train = np.array(X_train), np.array(Y_train)
     # Validate
     X_val, Y_val = [], []
     for _ in range(t_num):
-        X_val.append((random.uniform(0, 50), random.uniform(0, 50)))
+        X_val.append([random.uniform(0, 50) for _ in range(d)])
         Y_val.append(random.randint(0, 1))
     X_val, Y_val = np.array(X_val), np.array(Y_val)
     for model_class in (KNNModel_Naive, KNNModel_Heap, KNNModel_KDTree):
@@ -142,8 +142,8 @@ def _TestVisualization():
 
 if __name__ == '__main__':
     import random, time
-    # _TestEfficiency()
+    _TestEfficiency()
     # Visualization
-    _TestVisualization()
+    # _TestVisualization()
 
 
