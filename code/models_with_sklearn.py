@@ -1,9 +1,8 @@
 # coding=utf-8
 
-import sklearn
+from sklearn import *
 
-nb = sklearn.naive_bayes.BernoulliNB()
-lr = sklearn.linear_model.LogisticRegression()
-svm_model = sklearn.svm.SVC()
-
-
+nb = naive_bayes.BernoulliNB()
+lr = linear_model.LogisticRegression()
+svm_model = svm.SVC()
+knn = neighbors.KNeighborsClassifier()
