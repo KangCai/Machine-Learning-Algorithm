@@ -7,7 +7,7 @@ class KNNModel_Naive(object):
 
     def __init__(self, k, X_train, Y_train):
         """
-        Train model.
+        Train model implicitly. No explicit training process.
         :param:
         :param X_train:
         :param Y_train:
