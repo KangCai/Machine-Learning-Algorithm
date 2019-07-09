@@ -10,14 +10,13 @@ class MaxEntropy(object):
         self.epsilon = epsilon
         self.n_iter = n_iter
         self.w = None
-        # 训练样本量，特征维度，x 的经验边缘分布，(x,y) 的联合概率分布，特征函数关于 (x,y) 联合分布的期望值，特征函数，记录标签集
+        # 训练样本量，特征维度，x 的经验边缘分布，(x,y) 的联合概率分布，特征函数关于 (x,y) 联合分布的期望值，特征函数 f(x,y)，记录标签集
         self.N, self.M, self.px, self.pxy, self.e_feat, self.feat_list, self.labels = \
             None, None, defaultdict(lambda: 0), defaultdict(lambda: 0), defaultdict(lambda: 0), [], []
 
     def fit(self, X_train, Y_train):
         self.N, self.M = X_train.shape
         self.labels = np.arange(np.bincount(Y_train).size)
-        print('@@@', self.labels)
         # 统计 (x,y) 的联合概率分布，x 的经验边缘分布
         feat_set = set()
         for X,y in zip(X_train, Y_train):
@@ -30,7 +29,7 @@ class MaxEntropy(object):
         self.feat_list = list(feat_set)
         self.w = np.zeros(len(self.feat_list))
         print(self.px, self.pxy)
-        # 计算特征的经验期望值
+        # 计算特征的经验期望值, E_p~(f) = Sum( P~(x,y) * f(x,y) )
         for X,y in zip(X_train, Y_train):
             X = tuple(X)
             for idx, val in enumerate(X):
@@ -46,7 +45,7 @@ class MaxEntropy(object):
 
     def _GIS(self, X_train, Y_train):
         n_feat = len(self.feat_list)
-        # 基于当前模型，获取每个特征估计期望
+        # 基于当前模型，获取每个特征估计期望, E_p(f) = Sum( P~(x) * P(y|x) * f(x,y) )
         delta = np.zeros(n_feat)
         estimate_feat = defaultdict(float)
         for X,y in zip(X_train, Y_train):
@@ -76,15 +75,19 @@ class MaxEntropy(object):
                 if feat_key in self.feat_list:
                     dim_idx = self.feat_list.index(feat_key)
                     s += self.w[dim_idx]
-            print(self.w)
             py_X[y] = math.exp(s)
         normalizer = sum(py_X.values())
-        for key, val in py_X.items():
-            py_X[key] = val / normalizer
+        for label, val in py_X.items():
+            py_X[label] = val / normalizer
         return py_X
 
     def predict(self, X):
-        pass
+        n, m = X.shape
+        result_array = np.zeros(n)
+        for i in range(n):
+            res = self._cal_py_X(X[i, :])
+            result_array[i] = max(res, key=res.get)
+        return result_array
 
 datalabel = np.array(['年龄', '有工作', '有自己的房子', '信贷情况', '类别'])
 train_sets = np.array([
@@ -114,3 +117,5 @@ if __name__ == '__main__':
     X_t, Y_t = train_sets_encode[:, :-1], train_sets_encode[:, -1]
     model = MaxEntropy()
     model.fit(X_t, Y_t)
+    res = model.predict(X_t)
+    print('Predict result on Trainset: %r' % (res,))
