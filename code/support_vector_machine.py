@@ -22,7 +22,7 @@ class SVMModel(object):
         self.epsilon = epsilon
         self.alpha = None
 
-    def train(self, X_train, Y_train):
+    def fit(self, X_train, Y_train):
         """
         Training model
         :param X_train: shape = num_train, dim_feature
@@ -112,7 +112,7 @@ def _GenerateData():
 if __name__ == '__main__':
     model = SVMModel()
     X_t, X_v, Y_t, Y_v = _GenerateData()
-    model.train(X_t, Y_t)
+    model.fit(X_t, Y_t)
     plt.plot([10, 0], [(-model.b-model.w[0]*10)/model.w[1], -model.b/model.w[1]])
     alpha_idx = np.where(model.alpha > 0)[0]
     for i__ in range(len(model.alpha)):
