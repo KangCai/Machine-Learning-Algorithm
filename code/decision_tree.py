@@ -13,7 +13,6 @@ class DTreeID3(object):
         self._train(X_train, Y_train, self.tree, A_recorder)
 
     def _train(self, A, D, node, AR):
-        row, col = A.shape
         # 1. 结束条件：若 D 中所有实例属于同一类，决策树成单节点树，直接返回
         if np.any(np.bincount(D) == len(D)):
             node.y = D[0]
@@ -23,19 +22,7 @@ class DTreeID3(object):
             node.y = np.argmax(np.bincount(D))
             return
         # 3. 计算特征集 A 中各特征对 D 的信息增益，选择信息增益最大的特征 A_g
-        entropy = self._cal_entropy(D)
-        max_info_gain = None
-        g = None
-        for j in range(col):
-            a_cls = np.bincount(A[:, j])
-            condition_entropy = 0
-            for k in range(len(a_cls)):
-                a_row_idxs = np.argwhere(A[:, j] == k)
-                # H(D|A)=SUM(p_i * H(D|A=a_i))
-                condition_entropy += a_cls[k] / np.sum(a_cls) * self._cal_entropy(D[a_row_idxs].T[0])
-            if max_info_gain is None or max_info_gain < entropy - condition_entropy:
-                max_info_gain = entropy - condition_entropy
-                g = j
+        max_info_gain, g = self._feature_choose_standard(A, D)
         # 4. 结束条件：如果 A_g 的信息增益小于阈值 epsilon，决策树成单节点树，直接返回
         if max_info_gain <= self.epsilon:
             node.y = np.argmax(np.bincount(D))
@@ -52,14 +39,81 @@ class DTreeID3(object):
             A_child, D_child= new_A[a_row_idxs, :], D[a_row_idxs]
             self._train(A_child, D_child, child, AR)
 
-    def _cal_entropy(self, D):
+    def _feature_choose_standard(self, A, D):
+        row, col = A.shape
+        prob = self._cal_prob(D)
+        prob = np.array([a if 0 < a <= 1 else 1 for a in prob])
+        entropy = -np.sum(prob * np.log2(prob))
+        max_info_gain_ratio = None
+        g = None
+        for j in range(col):
+            a_cls = np.bincount(A[:, j])
+            condition_entropy = 0
+            for k in range(len(a_cls)):
+                a_row_idxs = np.argwhere(A[:, j] == k)
+                # H(D)
+                prob = self._cal_prob(D[a_row_idxs].T[0])
+                prob = np.array([a if 0 < a <= 1 else 1 for a in prob])
+                H_D = -np.sum(prob * np.log2(prob))
+                # H(D|A)=SUM(p_i * H(D|A=a_i))
+                condition_entropy += a_cls[k] / np.sum(a_cls) * H_D
+            feature_choose_std = entropy - condition_entropy
+            if max_info_gain_ratio is None or max_info_gain_ratio < feature_choose_std:
+                max_info_gain_ratio = feature_choose_std
+                g = j
+        return max_info_gain_ratio, g
+
+    def _cal_prob(self, D):
         statistic = np.bincount(D)
         prob = statistic / np.sum(statistic)
-        prob = np.array([a if 0 < a <= 1 else 1 for a in prob])
-        # H(D) = -SUM(p_i * log(p_i))
-        entropy = -np.sum(prob * np.log2(prob))
-        return entropy
+        return prob
 
+class DTreeC45(DTreeID3):
+
+    def _feature_choose_standard(self, A, D):
+        row, col = A.shape
+        prob = self._cal_prob(D)
+        prob = np.array([a if 0 < a <= 1 else 1 for a in prob])
+        entropy = -np.sum(prob * np.log2(prob))
+        max_info_gain_ratio = None
+        g = None
+        for j in range(col):
+            a_cls = np.bincount(A[:, j])
+            condition_entropy = 0
+            for k in range(len(a_cls)):
+                a_row_idxs = np.argwhere(A[:, j] == k)
+                # H(D) = -SUM(p_i * log(p_i))
+                prob = self._cal_prob(D[a_row_idxs].T[0])
+                prob = np.array([a if 0 < a <= 1 else 1 for a in prob])
+                H_D = -np.sum(prob * np.log2(prob))
+                # H(D|A)=SUM(p_i * H(D|A=a_i))
+                condition_entropy += a_cls[k] / np.sum(a_cls) * H_D
+            feature_choose_std = entropy / (condition_entropy + 0.0001)
+            if max_info_gain_ratio is None or max_info_gain_ratio < feature_choose_std:
+                max_info_gain_ratio = feature_choose_std
+                g = j
+        return max_info_gain_ratio, g
+
+class DTreeCART(DTreeID3):
+
+    def _feature_choose_standard(self, A, D):
+        row, col = A.shape
+        min_gini = None
+        g = None
+        for j in range(col):
+            a_cls = np.bincount(A[:, j])
+            gini_DA = 0
+            for k in range(len(a_cls)):
+                a_row_idxs = np.argwhere(A[:, j] == k)
+                # H(D) = -SUM(p_i * log(p_i))
+                prob = self._cal_prob(D[a_row_idxs].T[0])
+                gini_D = 1 - np.sum(prob * prob)
+                # H(D|A)=SUM(p_i * H(D|A=a_i))
+                gini_DA += a_cls[k] / np.sum(a_cls) * gini_D
+            if min_gini is None or min_gini > gini_DA:
+                min_gini = gini_DA
+                g = j
+        return min_gini, g
 
 class Node(object):
 
@@ -105,11 +159,13 @@ def _visualization_DFS(node, layer=0):
     return ''.join(output_str)
 
 if __name__ == '__main__':
-    model = DTreeID3(0.00001)
-    row_, col_ = train_sets.shape
-    train_sets_encode = np.array([[map_table[train_sets[i, j]] for j in range(col_)] for i in range(row_)])
-    X_t, Y_t = train_sets_encode[:, :-1], train_sets_encode[:, -1]
-    model.fit(X_t, Y_t)
-    print(_visualization_DFS(model.tree))
+    for model in (DTreeID3(0.00001), DTreeC45(0.00001), DTreeCART(0.00001)):
+        row_, col_ = train_sets.shape
+        train_sets_encode = np.array([[map_table[train_sets[i, j]] for j in range(col_)] for i in range(row_)])
+        X_t, Y_t = train_sets_encode[:, :-1], train_sets_encode[:, -1]
+        model.fit(X_t, Y_t)
+        print(_visualization_DFS(model.tree))
+
+
 
 
