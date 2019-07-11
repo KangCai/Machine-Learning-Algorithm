@@ -194,7 +194,7 @@ def draw(kw_count_list):
 
 
 if __name__ == '__main__':
-    file_name = '../data/SMSSpamCollection.txt'
+    file_name = './data/SMSSpamCollection.txt'
     raw_data_list = data_pre_process(file_name)
     fold_count = 4
     fold_data_list = shuffle(raw_data_list, fold_count)

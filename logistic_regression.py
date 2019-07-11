@@ -196,7 +196,7 @@ def performance_with_cut_off():
 
     :return:
     """
-    file_name = '../data/SMSSpamCollection.txt'
+    file_name = './data/SMSSpamCollection.txt'
     raw_data_list = data_pre_process(file_name)
     fold_count = 4
     fold_data_list = shuffle(raw_data_list, fold_count)
@@ -220,12 +220,12 @@ def performance_with_cut_off():
         accuracy_list.append(accuracy)
         metric_list.append(metric)
         time_cost_list.append((time.clock() - t1))
-    with open('../result/lr_loss_list.txt', 'w') as f:
+    with open('./result/lr_loss_list.txt', 'w') as f:
         f.write(str(loss_list) + '\n')
         f.write(str(accuracy_list) + '\n')
         f.write(str(time_cost_list) + '\n')
         f.write(str(metric_list))
-    with open('../result/lr_loss_list.txt') as f:
+    with open('./result/lr_loss_list.txt') as f:
         loss_list = eval(f.readline())
         draw_loss_list(loss_list)
         accuracy_list = eval(f.readline())
@@ -240,7 +240,7 @@ def performance_with_fold():
 
     :return:
     """
-    file_name = '../data/SMSSpamCollection.txt'
+    file_name = './data/SMSSpamCollection.txt'
     raw_data_list = data_pre_process(file_name)
     fold_count = 4
     fold_data_list = shuffle(raw_data_list, fold_count)
