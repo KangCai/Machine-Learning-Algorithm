@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import numpy as np
-import code.util_kd_tree as kdtree
+import util_kd_tree as kdtree
 
 class KNNModel_Naive(object):
 
