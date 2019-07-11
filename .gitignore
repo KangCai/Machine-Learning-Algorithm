@@ -1,4 +1,5 @@
-
+*.name
 *.xml
 *.iml
 *.pyc
+ttt.py
