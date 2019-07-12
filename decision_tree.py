@@ -4,13 +4,23 @@ import numpy as np
 
 class DTreeID3(object):
 
-    def __init__(self, epsilon):
+    def __init__(self, epsilon=0.0001):
         self.tree = Node()
         self.epsilon = epsilon
 
     def fit(self, X_train, Y_train):
         A_recorder = np.arange(X_train.shape[1])
         self._train(X_train, Y_train, self.tree, A_recorder)
+
+    def predict(self, X):
+        n = X.shape[0]
+        Y = np.zeros(n)
+        for i in range(n):
+            Y[i] = self.tree.predict(X[i, :])
+        return Y
+
+    def visualization(self):
+        return self._visualization_dfs(self.tree)
 
     def _train(self, A, D, node, AR):
         # 1. 结束条件：若 D 中所有实例属于同一类，决策树成单节点树，直接返回
@@ -34,7 +44,7 @@ class DTreeID3(object):
         new_A, AR = np.hstack((A[:, 0:g], A[:, g+1:])), np.hstack((AR[0:g], AR[g+1:]))
         for k in range(len(a_cls)):
             a_row_idxs = np.argwhere(A[:, g] == k).T[0].T
-            child = Node()
+            child = Node(k)
             node.append(child)
             A_child, D_child= new_A[a_row_idxs, :], D[a_row_idxs]
             self._train(A_child, D_child, child, AR)
@@ -67,6 +77,15 @@ class DTreeID3(object):
         statistic = np.bincount(D)
         prob = statistic / np.sum(statistic)
         return prob
+
+    def _visualization_dfs(self, node, layer=0):
+        prefix = '\n' if layer else ''
+        output_str = [prefix + ' ' * 4 * layer, '%r+%r ' % (node.y, node.label)]
+        if not node.child:
+            return ''.join(output_str)
+        for child in node.child:
+            output_str.append(_visualization_DFS(child, layer=layer + 1))
+        return ''.join(output_str)
 
 class DTreeC45(DTreeID3):
 
@@ -117,18 +136,24 @@ class DTreeCART(DTreeID3):
 
 class Node(object):
 
-    def __init__(self):
+    def __init__(self, x=None):
         self.label = None
-        self.x = None
+        self.x = x # Integer
         self.child = []
-        self.y = None
+        self.y = None # Integer
         self.data = None
 
     def append(self, child):
         self.child.append(child)
 
+    def predict(self, features):
+        if self.y is not None:
+            return self.y
+        for child in self.child:
+            if child.x == features[self.label]:
+                return child.predict(features)
 
-datalabel = np.array(['年龄', '有工作', '有自己的房子', '信贷情况', '类别'])
+datalabel = np.array(['年龄(特征1)', '有工作(特征2)', '有自己的房子(特征3)', '信贷情况(特征4)', '类别(标签)'])
 train_sets = np.array([
                     ['青年', '否', '否', '一般', '否'],
                     ['青年', '否', '否', '好', '否'],
@@ -151,7 +176,8 @@ map_table = {'青年': 0, '中年': 1, '老年': 2,
              '一般': 0, '好': 1, '非常好': 2}
 
 def _visualization_DFS(node, layer=0):
-    output_str = ['\n' + ' ' * 4 * layer, '%r+%r ' % (node.y, node.label)]
+    prefix = '\n' if layer else ''
+    output_str = [prefix + ' ' * 4 * layer, '%r+%r ' % (node.y, node.label)]
     if not node.child:
         return ''.join(output_str)
     for child in node.child:
@@ -159,12 +185,17 @@ def _visualization_DFS(node, layer=0):
     return ''.join(output_str)
 
 if __name__ == '__main__':
-    for model in (DTreeID3(0.00001), DTreeC45(0.00001), DTreeCART(0.00001)):
+    for model in (DTreeID3(), DTreeC45(), DTreeCART()):
         row_, col_ = train_sets.shape
         train_sets_encode = np.array([[map_table[train_sets[i, j]] for j in range(col_)] for i in range(row_)])
         X_t, Y_t = train_sets_encode[:, :-1], train_sets_encode[:, -1]
         model.fit(X_t, Y_t)
-        print(_visualization_DFS(model.tree))
+        print('=' * 20 + model.__class__.__name__ + '=' * 20)
+        print('\n<Tree Strucutre>')
+        print(model.visualization())
+        print('\n<Label Output>')
+        print(model.predict(X_t))
+        print()
 
 
 

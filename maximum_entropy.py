@@ -85,11 +85,11 @@ class MaxEntropy(object):
         n, m = X.shape
         result_array = np.zeros(n)
         for i in range(n):
-            res = self._cal_py_X(X[i, :])
-            result_array[i] = max(res, key=res.get)
+            output = self._cal_py_X(X[i, :])
+            result_array[i] = max(output, key=output.get)
         return result_array
 
-datalabel = np.array(['年龄', '有工作', '有自己的房子', '信贷情况', '类别'])
+datalabel = np.array(['年龄(特征1)', '有工作(特征2)', '有自己的房子(特征3)', '信贷情况(特征4)', '类别(标签)'])
 train_sets = np.array([
                     ['青年', '否', '否', '一般', '否'],
                     ['青年', '否', '否', '好', '否'],
