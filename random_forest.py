@@ -2,7 +2,6 @@
 
 import numpy as np
 import decision_tree
-import random
 
 class RandomForest(object):
 
