@@ -54,7 +54,7 @@
 
 ---
 
-**『Random Forest (TODO)』**
+**『Random Forest』**
 
 **File** - [random_forest.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/random_forest.py)
 
@@ -90,9 +90,11 @@
 
 **『Principal Component Analysis』**
 
----
-
 **File** - [principal_component_analysis.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/principal_component_analysis.py)
+
+**Example** -
+
+<img src="https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/result/pca_example.png" width=0.5/>
 
 ---
 
