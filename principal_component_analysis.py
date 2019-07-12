@@ -27,7 +27,6 @@ def pca(data_mat, top_n_feat=1, draw=False):
     red_eig_vec = eig_vec[:, eig_val_ind]
     # 将去除均值后的数据矩阵*压缩矩阵，转换到新的空间，使维度降低为N
     low_dim_data_mat = mean_removed * red_eig_vec
-    print('XXX', red_eig_vec, mean_val)
     # 利用降维后的矩阵反构出原数据矩阵(用作测试，可跟未压缩的原矩阵比对)
     recon_mat = (low_dim_data_mat * red_eig_vec.T) + mean_val
     # 画图
@@ -54,7 +53,7 @@ def pca(data_mat, top_n_feat=1, draw=False):
 
 if __name__ == '__main__':
     data = np.array([[1, 0], [3, 2], [2, 2], [0, 2], [1, 3]])
-    print(data[:, 0])
+    print('Raw data: %r\n' % data[:, 0])
     lowDData, recon = pca(data, draw=True)
-    print(lowDData)
-    print(recon)
+    print('PCA data: %r\n' % lowDData)
+    print('Reconstructed data: %r' % recon)
