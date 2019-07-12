@@ -94,7 +94,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/blob/master/result/pca_example.png" width=0.5/>
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/pca_example.png" width=50%/>
 
 ---
 
