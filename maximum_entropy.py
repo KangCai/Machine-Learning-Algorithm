@@ -43,6 +43,14 @@ class MaxEntropy(object):
                 break
             self.w += delta
 
+    def predict(self, X):
+        n, m = X.shape
+        result_array = np.zeros(n)
+        for i in range(n):
+            output = self._cal_py_X(X[i, :])
+            result_array[i] = max(output, key=output.get)
+        return result_array
+
     def _GIS(self, X_train, Y_train):
         n_feat = len(self.feat_list)
         # 基于当前模型，获取每个特征估计期望, E_p(f) = Sum( P~(x) * P(y|x) * f(x,y) )
@@ -80,14 +88,6 @@ class MaxEntropy(object):
         for label, val in py_X.items():
             py_X[label] = val / normalizer
         return py_X
-
-    def predict(self, X):
-        n, m = X.shape
-        result_array = np.zeros(n)
-        for i in range(n):
-            output = self._cal_py_X(X[i, :])
-            result_array[i] = max(output, key=output.get)
-        return result_array
 
 datalabel = np.array(['年龄(特征1)', '有工作(特征2)', '有自己的房子(特征3)', '信贷情况(特征4)', '类别(标签)'])
 train_sets = np.array([

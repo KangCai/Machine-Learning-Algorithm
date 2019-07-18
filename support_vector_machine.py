@@ -39,6 +39,12 @@ class SVMModel(object):
             if diff < self.epsilon:
                 break
 
+    def predict_raw(self, X):
+        return np.dot(self.w.T, X.T) + self.b
+
+    def predict(self, X):
+        return np.sign(np.dot(self.w.T, X.T) + self.b).astype(int)
+
     def _iteration(self, X_train, Y_train):
         alpha = self.alpha
         alpha_prev = np.copy(alpha)
@@ -84,12 +90,6 @@ class SVMModel(object):
             L = max(0, a_i + a_j - C)
             H = min(C, a_i + a_j)
         return L, H
-
-    def predict_raw(self, X):
-        return np.dot(self.w.T, X.T) + self.b
-
-    def predict(self, X):
-        return np.sign(np.dot(self.w.T, X.T) + self.b).astype(int)
 
 def _GenerateData():
     k, m, n_train, n_val = 5, 2, 5, 2
