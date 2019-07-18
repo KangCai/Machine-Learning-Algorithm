@@ -16,7 +16,7 @@ class DTreeID3(object):
         n = X.shape[0]
         Y = np.zeros(n)
         for i in range(n):
-            Y[i] = self.tree.predict(X[i, :])
+            Y[i] = self.tree.predict_classification(X[i, :])
         return Y
 
     def visualization(self):
@@ -144,6 +144,13 @@ class DTreeRegressionCART(object):
         A_recorder = np.arange(X_train.shape[1])
         self._train(X_train, Y_train, self.tree, A_recorder)
 
+    def predict(self, X):
+        n = X.shape[0]
+        Y = np.zeros(n)
+        for i in range(n):
+            Y[i] = self.tree.predict_regression(X[i, :])
+        return Y
+
     def _train(self, A, D, node, AR, depth=0):
         # 1. 结束条件：到最后一层 | A 或 D 一样
         if depth == self.max_depth or np.all(D == D[0]) or np.all(A == A[0]):
@@ -198,12 +205,18 @@ class Node(object):
     def append(self, child):
         self.child.append(child)
 
-    def predict(self, features):
+    def predict_classification(self, features):
         if self.y is not None:
             return self.y
         for child in self.child:
             if child.x == features[self.label]:
-                return child.predict(features)
+                return child.predict_classification(features)
+
+    def predict_regression(self, features):
+        if self.y is not None:
+            return self.y
+        child_idx = 0 if features[self.label] <= self.s else 1
+        return self.child[child_idx].predict_regression(features)
 
 datalabel = np.array(['年龄(特征1)', '有工作(特征2)', '有自己的房子(特征3)', '信贷情况(特征4)', '类别(标签)'])
 train_sets = np.array([
@@ -243,7 +256,10 @@ if __name__ == '__main__':
     model = DTreeRegressionCART(max_depth=2)
     print('=' * 20 + model.__class__.__name__ + '=' * 20)
     model.fit(X_t, Y_t)
+    print('\n<Tree Strucutre>')
     print(model.visualization())
+    print('\n<Label Output>')
+    print(model.predict(X_t))
 
 
 
