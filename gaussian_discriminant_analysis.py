@@ -62,4 +62,5 @@ if __name__ == '__main__':
     plt.plot(bx, by)
     plt.xlim(0, 20)
     plt.ylim(0, 20)
+    plt.title('Gaussian discriminant analysis')
     plt.show()
