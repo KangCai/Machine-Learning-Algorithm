@@ -22,7 +22,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/svm_example.png" width=50%/>
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/svm_example.png" width=60%/>
 
 **Cost Function** -
 
@@ -48,7 +48,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/nb_example.png" width=50%/>
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/nb_example.png" width=80%/>
 
 ---
 
@@ -70,7 +70,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/cart_example.png" width=50%/>
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/cart_example.png" width=45%/>
 
 ---
 
@@ -80,13 +80,15 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/random_forest_example.png" width=50%/>
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/random_forest_example.png" width=70%/>
 
 ---
 
-**『Gradient Boosting Decision Tree (TODO)』**
+**『Gradient Boosting Decision Tree』**
 
 **File** - [gradient_boosting_decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gradient_boosting_decision_tree.py)
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/gbdt_example.png" width=25%/>
 
 ---
 
@@ -102,11 +104,11 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/maximum_entropy_example.png" width=50%/>
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/maximum_entropy_example.png" width=80%/>
 
 ---
 
-**『Gaussian Discriminant Analysis (TODO)』**
+**『Gaussian Discriminant Analysis』**
 
 **File** - [gaussian_discriminant_analysis.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gaussian_discriminant_analysis.py)
 
