@@ -53,5 +53,7 @@ if __name__ == '__main__':
     X_ = np.array([[0, 1], [1, 2], [2, 3], [3, 4]])
     Y_ = np.array([1, 2, 3, 4])
     model.fit(X_, Y_)
+    print('<Label Ground Truth>')
+    print(Y_)
     print('<Label Output>')
     print(model.predict(X_))

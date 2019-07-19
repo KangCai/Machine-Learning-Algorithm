@@ -20,9 +20,13 @@
 
 **File** - [support_vector_machine.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/support_vector_machine.py)
 
+**Example** -
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/svm_example.png" width=50%/>
+
 **Cost Function** -
 
-<a href="https://www.codecogs.com/eqnedit.php?latex=\begin{aligned}&space;max\&space;W(\alpha)&=\sum_{i=1}^{n}\alpha-\frac{1}{2}\sum_{i,j=1}^{n}y_iy_ja_ia_j(K(x_i,x_j))\\&space;s.t.\sum_{i=1}^{n}y_ia_i&=0&space;\\&space;0&space;\leq&space;a_i&space;\leq&space;C&(i=1,2...n)&space;\end{aligned}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\begin{aligned}&space;max\&space;W(\alpha)&=\sum_{i=1}^{n}\alpha-\frac{1}{2}\sum_{i,j=1}^{n}y_iy_ja_ia_j(K(x_i,x_j))\\&space;s.t.\sum_{i=1}^{n}y_ia_i&=0&space;\\&space;0&space;\leq&space;a_i&space;\leq&space;C&(i=1,2...n)&space;\end{aligned}" title="\begin{aligned} max\ W(\alpha)&=\sum_{i=1}^{n}\alpha-\frac{1}{2}\sum_{i,j=1}^{n}y_iy_ja_ia_j(K(x_i,x_j))\\ s.t.\sum_{i=1}^{n}y_ia_i&=0 \\ 0 \leq a_i \leq C&(i=1,2...n) \end{aligned}" /></a>
+<img src="https://latex.codecogs.com/gif.latex?\begin{aligned}&space;max\&space;W(\alpha)&=\sum_{i=1}^{n}\alpha-\frac{1}{2}\sum_{i,j=1}^{n}y_iy_ja_ia_j(K(x_i,x_j))\\&space;s.t.\sum_{i=1}^{n}y_ia_i&=0&space;\\&space;0&space;\leq&space;a_i&space;\leq&space;C&(i=1,2...n)&space;\end{aligned}" />
 
 **Optimization Algorithm** - Sequential minimal optimization (SMO)
 
@@ -32,17 +36,29 @@
 
 **File** - [perception.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/perception.py)
 
+**Example** -
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/perception_example.png" width=50%/>
+
 ---
 
 **『Naive Bayes』**
 
 **File** - [naive_bayes.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/naive_bayes.py)
 
+**Example** -
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/nb_example.png" width=50%/>
+
 ---
 
 **『K-Nearest Neighbor』**
 
 **File** - [k_nearest_neighbor.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/k_nearest_neighbor.py) | [util_kd_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/util_kd_tree.py)
+
+**Example** -
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/knn_example.png" width=50%/>
 
 ---
 
@@ -52,11 +68,19 @@
 
 **Optimization Algorithm** - Generalized Iterative Scaling (GIS)
 
+**Example** -
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/cart_example.png" width=50%/>
+
 ---
 
 **『Random Forest』**
 
 **File** - [random_forest.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/random_forest.py)
+
+**Example** -
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/random_forest_example.png" width=50%/>
 
 ---
 
@@ -76,11 +100,17 @@
 
 **File** - [maximum_entropy.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/maximum_entropy.py)
 
+**Example** -
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/maximum_entropy_example.png" width=50%/>
+
 ---
 
 **『Gaussian Discriminant Analysis (TODO)』**
 
 **File** - [gaussian_discriminant_analysis.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gaussian_discriminant_analysis.py)
+
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/gda_example.png" width=50%/>
 
 ---
 

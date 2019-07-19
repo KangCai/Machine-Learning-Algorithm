@@ -118,4 +118,5 @@ if __name__ == '__main__':
     model = MaxEntropy()
     model.fit(X_t, Y_t)
     res = model.predict(X_t)
-    print('Predict result on Trainset: %r' % (res,))
+    print('Ground truth on Trainset: %r' % (Y_t,))
+    print('Predict result on Trainset: %r' % (res.astype(int),))

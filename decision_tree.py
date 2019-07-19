@@ -249,8 +249,10 @@ if __name__ == '__main__':
         print('=' * 20 + model.__class__.__name__ + '=' * 20)
         print('\n<Tree Strucutre>')
         print(model.visualization())
+        print('\n<Label Groundtruth>')
+        print(Y_t)
         print('\n<Label Output>')
-        print(model.predict(X_t))
+        print(model.predict(X_t).astype(int))
         print()
 
     model = DTreeRegressionCART(max_depth=2)
