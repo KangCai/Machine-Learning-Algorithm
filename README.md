@@ -14,6 +14,8 @@
 
 **Optimization Algorithm** - Gradient descent method
 
+<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/lr_example.png" width=80%/>
+
 ---
 
 **『Support Vector Machine』**
