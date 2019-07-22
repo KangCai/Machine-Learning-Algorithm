@@ -25,6 +25,8 @@ class PerceptionPrimitive(object):
             self.error_count_history.append(error_count)
             if error_count == 0:
                 break
+            # if self.w[1]:
+            #     plt.plot([10, 0], [(-self.b - self.w[0] * 10) / self.w[1], -self.b / self.w[1]])
 
     def predict_raw(self, x):
         return np.dot(x, self.w) + self.b
@@ -55,7 +57,7 @@ class PerceptionDual(PerceptionPrimitive):
                 # a <- a + eta, b <- b + eta * y_i
                 self.alpha[i] += self.eta
                 self.b += self.eta * Y_train[i]
-                print('Iteration: %r/%r' % (i, n_samples))
+                # print('Iteration: %r/%r' % (i, n_samples))
                 i = 0
             else:
                 i += 1
