@@ -1,6 +1,6 @@
 # Machine-Learning-Algorithm
 
-### Logistic Regression
+### 1. Logistic Regression
 
 **File** - [logistic_regression.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/logistic_regression.py)
 
@@ -14,7 +14,7 @@
 
 ---
 
-### Support Vector Machine
+### 2. Support Vector Machine
 
 **File** - [support_vector_machine.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/support_vector_machine.py)
 
@@ -30,7 +30,7 @@
 
 ---
 
-### Perception
+### 3. Perception
 
 **File** - [perception.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/perception.py)
 
@@ -40,7 +40,7 @@
 
 ---
 
-### Naive Bayes
+### 4. Naive Bayes
 
 **File** - [naive_bayes.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/naive_bayes.py)
 
@@ -50,7 +50,7 @@
 
 ---
 
-### K-Nearest Neighbor
+### 5. K-Nearest Neighbor
 
 **File** - [k_nearest_neighbor.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/k_nearest_neighbor.py) | [util_kd_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/util_kd_tree.py)
 
@@ -60,7 +60,7 @@
 
 ---
 
-### Decision Tree
+### 6. Decision Tree
 
 **File** - [decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/decision_tree.py)
 
@@ -72,7 +72,7 @@
 
 ---
 
-### Random Forest
+### 7. Random Forest
 
 **File** - [random_forest.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/random_forest.py)
 
@@ -82,7 +82,7 @@
 
 ---
 
-### Gradient Boosting Decision Tree
+### 8. Gradient Boosting Decision Tree
 
 **File** - [gradient_boosting_decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gradient_boosting_decision_tree.py)
 
@@ -90,13 +90,13 @@
 
 ---
 
-### Linear Discriminant Analysis
+### 9. Linear Discriminant Analysis
 
 **File** - [linear_discriminant_analysis.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/linear_discriminant_analysis.py)
 
 ---
 
-### Maximum Entropy
+### 10. Maximum Entropy
 
 **File** - [maximum_entropy.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/maximum_entropy.py)
 
@@ -106,7 +106,7 @@
 
 ---
 
-### Gaussian Discriminant Analysis
+### 11. Gaussian Discriminant Analysis
 
 **File** - [gaussian_discriminant_analysis.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gaussian_discriminant_analysis.py)
 
@@ -114,7 +114,7 @@
 
 ---
 
-### Principal Component Analysis
+### 12. Principal Component Analysis
 
 **File** - [principal_component_analysis.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/principal_component_analysis.py)
 
@@ -124,6 +124,6 @@
 
 ---
 
-### K-means
+### 13. K-means
 
 **File** - [kmeans.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/kmeans.py) | [util_kd_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/util_kd_tree.py)
