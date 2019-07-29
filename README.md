@@ -1,5 +1,7 @@
 # Machine-Learning-Algorithm
 
+**注意: 每个文件只有开始的 class 是模型本身，其它代码都是用来测试的，每个模型的实现都在 100 行以内**
+
 ### 1. Logistic Regression
 
 **File** - [logistic_regression.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/logistic_regression.py)
@@ -74,7 +76,7 @@
 
 ### 7. Random Forest
 
-**File** - [random_forest.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/random_forest.py)
+**File** - [random_forest.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/random_forest.py) | | [decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/decision_tree.py)
 
 **Example** -
 
@@ -84,7 +86,7 @@
 
 ### 8. Gradient Boosting Decision Tree
 
-**File** - [gradient_boosting_decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gradient_boosting_decision_tree.py)
+**File** - [gradient_boosting_decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gradient_boosting_decision_tree.py) | [decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/decision_tree.py)
 
 <img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/gbdt_example.png" width=25%/>
 
