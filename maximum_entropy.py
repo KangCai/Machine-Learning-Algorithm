@@ -34,7 +34,7 @@ class MaxEntropy(object):
             X = tuple(X)
             for idx, val in enumerate(X):
                 key = (idx, val, y)
-                self.e_feat[key] += self.pxy[X, y]
+                self.e_feat[key] += self.pxy[(X, y)]
         # 迭代找到最优参数 self.w
         for i in range(self.n_iter):
             delta = self._GIS(X_train, Y_train)
@@ -74,7 +74,7 @@ class MaxEntropy(object):
         return delta
 
     def _cal_py_X(self, X):
-        # 计算条件分布概率 y|x
+        # 计算条件分布概率 P(y|x)
         py_X = defaultdict(float)
         for y in self.labels:
             s = 0
@@ -107,6 +107,13 @@ train_sets = np.array([
                     ['老年', '是', '否', '非常好', '是'],
                     ['老年', '否', '否', '一般', '否'],
                     ['青年', '否', '否', '一般', '是']])
+validate_sets = np.array([
+    ['青年', '是', '是', '好', '是'],
+    ['青年', '是', '否', '一般', '是'],
+    ['中年', '否', '否', '一般', '否'],
+    ['老年', '是', '是', '一般', '是'],
+    ['青年', '否', '否', '非常好', '是'],
+])
 map_table = {'青年': 0, '中年': 1, '老年': 2,
              '否': 0, '是': 1,
              '一般': 0, '好': 1, '非常好': 2}
@@ -118,5 +125,11 @@ if __name__ == '__main__':
     model = MaxEntropy()
     model.fit(X_t, Y_t)
     res = model.predict(X_t)
-    print('Ground truth on Trainset: %r' % (Y_t,))
-    print('Predict result on Trainset: %r' % (res.astype(int),))
+    print('Ground truth   on train set: %r' % (Y_t,))
+    print('Predict result on train set: %r' % (res.astype(int),))
+    row_, col_ = validate_sets.shape
+    validate_sets_encode = np.array([[map_table[validate_sets[i, j]] for j in range(col_)] for i in range(row_)])
+    X_v, Y_v = validate_sets_encode[:, :-1], validate_sets_encode[:, -1]
+    res = model.predict(X_v)
+    print('Ground truth   on validate set: %r' % (Y_v,))
+    print('Predict result on validate set: %r' % (res.astype(int),))

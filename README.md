@@ -16,7 +16,7 @@
 
 **Optimization Algorithm** - Gradient descent method
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/lr_example.png" width=80%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949923-a1cafb00-fc23-11e9-9249-363cfee52f87.png" width=80%/>
 
 ---
 
@@ -26,7 +26,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/svm_example.png" width=60%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949933-a394be80-fc23-11e9-8b7e-bbeaa6670c3e.png" width=60%/>
 
 **Cost Function** -
 
@@ -42,7 +42,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/perception_example.png" width=50%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949931-a2fc2800-fc23-11e9-8825-d5a61778148f.png" width=50%/>
 
 ---
 
@@ -52,7 +52,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/nb_example.png" width=80%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949927-a2fc2800-fc23-11e9-8386-ead2ef4322bb.png" width=80%/>
 
 ---
 
@@ -62,7 +62,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/knn_example.png" width=50%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949920-a099ce00-fc23-11e9-90f2-3720c5ce7830.png" width=50%/>
 
 ---
 
@@ -74,7 +74,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/cart_example.png" width=45%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949914-a0013780-fc23-11e9-9b99-8633380d3164.png" width=45%/>
 
 ---
 
@@ -84,7 +84,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/random_forest_example.png" width=70%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949932-a394be80-fc23-11e9-9b6d-e04c5bf85849.png" width=70%/>
 
 ---
 
@@ -92,7 +92,7 @@
 
 **File** - [gradient_boosting_decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gradient_boosting_decision_tree.py) | [decision_tree.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/decision_tree.py)
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/gbdt_example.png" width=25%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949915-a0013780-fc23-11e9-81a5-36bd7b6c9e9c.png" width=25%/>
 
 ---
 
@@ -108,7 +108,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/maximum_entropy_example.png" width=80%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949926-a2639180-fc23-11e9-8830-4b7da5dc5e1c.png" width=80%/>
 
 ---
 
@@ -116,7 +116,7 @@
 
 **File** - [gaussian_discriminant_analysis.py](https://github.com/KangCai/Machine-Learning-Algorithm/blob/master/gaussian_discriminant_analysis.py)
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/gda_example.png" width=50%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949918-a099ce00-fc23-11e9-8550-953cc6f344f1.png" width=50%/>
 
 ---
 
@@ -126,7 +126,7 @@
 
 **Example** -
 
-<img src="https://raw.githubusercontent.com/KangCai/Machine-Learning-Algorithm/master/result/pca_example.png" width=50%/>
+<img src="https://user-images.githubusercontent.com/11633302/67949929-a2fc2800-fc23-11e9-9c9d-1baf77b219be.png" width=50%/>
 
 ---
 
