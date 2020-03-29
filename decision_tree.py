@@ -46,7 +46,7 @@ class DTreeID3(object):
             a_row_idxs = np.argwhere(A[:, g] == k).T[0].T
             child = Node(k)
             node.append(child)
-            A_child, D_child= new_A[a_row_idxs, :], D[a_row_idxs]
+            A_child, D_child = new_A[a_row_idxs, :], D[a_row_idxs]
             self._train(A_child, D_child, child, AR)
 
     def _feature_choose_standard(self, A, D):
@@ -115,24 +115,57 @@ class DTreeC45(DTreeID3):
 
 class DTreeCART(DTreeID3):
 
+    def _train(self, A, D, node, AR):
+        self.visited_set = set()
+        self._train_helper(A, D, node, AR)
+
+    def _train_helper(self, A, D, node, AR):
+        # 1. 结束条件：若 D 中所有实例属于同一类，决策树成单节点树，直接返回
+        if np.any(np.bincount(D) == len(D)):
+            node.y = D[0]
+            return
+        # 2. 与 ID3, C4.5 不一样, 不会直接去掉 A
+        if A.size == 0:
+            node.y = np.argmax(np.bincount(D))
+            return
+        # 3. 与 ID3, C4.5 不一样, 不仅要确定最优切分特征，还要确定最优切分值
+        max_info_gain, g, v, a_idx, other_idx = self._feature_choose_standard(A, D)
+        if (g, v) in self.visited_set:
+            node.y = np.argmax(np.bincount(D))
+            return
+        self.visited_set.add((g, v))
+        # 4. 结束条件：如果 A_g 的信息增益小于阈值 epsilon，决策树成单节点树，直接返回
+        if max_info_gain <= self.epsilon:
+            node.y = np.argmax(np.bincount(D))
+            return
+        # 5. 与 ID3, C4.5 不一样, 不是 len(a_cls) 叉树，而是二叉树
+        node.label = AR[g]
+        idx_list = a_idx, other_idx
+        for k, row_idx in enumerate(idx_list):
+            row_idx = row_idx.T[0].T
+            child = Node(k)
+            node.append(child)
+            A_child, D_child = A[row_idx, :], D[row_idx]
+            self._train_helper(A_child, D_child, child, AR)
+
     def _feature_choose_standard(self, A, D):
         row, col = A.shape
-        min_gini = None
-        g = None
+        min_gini, g, v, a_idx, other_idx = None, None, None, None, None
         for j in range(col):
             a_cls = np.bincount(A[:, j])
-            gini_DA = 0
+            # 与 ID3, C4.5 不一样,不仅要确定最优切分特征，还要确定最优切分值
             for k in range(len(a_cls)):
-                a_row_idxs = np.argwhere(A[:, j] == k)
+                # 根据切分值划为两类
+                a_row_idxs, other_row_idxs = np.argwhere(A[:, j] == k), np.argwhere(A[:, j] != k)
                 # H(D) = -SUM(p_i * log(p_i))
-                prob = self._cal_prob(D[a_row_idxs].T[0])
-                gini_D = 1 - np.sum(prob * prob)
+                a_prob, other_prob = self._cal_prob(D[a_row_idxs].T[0]), self._cal_prob(D[other_row_idxs].T[0])
+                a_gini_D, other_gini = 1 - np.sum(a_prob * a_prob), 1 - np.sum(other_prob * other_prob)
                 # H(D|A)=SUM(p_i * H(D|A=a_i))
-                gini_DA += a_cls[k] / np.sum(a_cls) * gini_D
-            if min_gini is None or min_gini > gini_DA:
-                min_gini = gini_DA
-                g = j
-        return min_gini, g
+                gini_DA = a_cls[k] / np.sum(a_cls) * a_gini_D + (1 - a_cls[k] / np.sum(a_cls)) * other_gini
+                if min_gini is None or min_gini > gini_DA:
+                    min_gini, g, v, a_idx, other_idx = gini_DA, j, k, a_row_idxs, other_row_idxs
+
+        return min_gini, g, v, a_idx, other_idx
 
 class DTreeRegressionCART(object):
 
@@ -211,12 +244,14 @@ class Node(object):
         for child in self.child:
             if child.x == features[self.label]:
                 return child.predict_classification(features)
+        return self.child[1].predict_classification(features)
 
     def predict_regression(self, features):
         if self.y is not None:
             return self.y
         child_idx = 0 if features[self.label] <= self.s else 1
         return self.child[child_idx].predict_regression(features)
+
 
 datalabel = np.array(['年龄(特征1)', '有工作(特征2)', '有自己的房子(特征3)', '信贷情况(特征4)', '类别(标签)'])
 train_sets = np.array([
